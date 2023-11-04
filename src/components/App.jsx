@@ -5,22 +5,48 @@ import { ContactList } from './ContactList/ContactList';
 import { Filter } from './Filter/Filter';
 import { GlobeWrap, Wrapper } from './App.styled';
 
+const getInitContacts = () => {
+  const localStorageContacts = localStorage.getItem('storedContacts');
+  if (localStorageContacts !== null) {
+    return JSON.parse(localStorageContacts);
+  }
+  return [];
+};
+
 export const App = () => {
-  const [contacts, setContacts] = useState([]);
+  const [contacts, setContacts] = useState(getInitContacts);
   const [filter, setFilter] = useState('');
 
   useEffect(() => {
-    localStorage.getItem('storedContacts');
-  }, []);
+    localStorage.setItem('storedContacts', JSON.stringify(contacts));
+  }, [contacts]);
 
-  // useEffect(() => {
-  //     localStorage.setItem('storedContacts', JSON.stringify(contacts));
-  //   }, [contacts]);
-  
-  const filteredContacts = [];
-  const addContacts = '';
-  const changeFilter = '';
-  const deleteContact = []
+  const getfilteredContacts =
+    filter === ''
+      ? contacts
+      : contacts.filter(({ name }) => {
+          const filterValue = filter.toLowerCase();
+          const filteredContacts = name.toLowerCase().includes(filterValue);
+          return filteredContacts;
+        });
+
+  const addContacts = objContact => {
+    if (contacts.some(contact => contact.name === objContact.name)) {
+      alert(`${objContact.name} is already in the phone book`);
+      return;
+    }
+    setContacts(prevState => [...prevState, { ...objContact, id: nanoid(5) }]);
+  };
+
+  const changeFilter = value => {
+    setFilter(value);
+  };
+
+  const deleteContact = contactId => {
+    setContacts(prevState =>
+      prevState.filter(contact => contact.id !== contactId)
+    );
+  };
 
   return (
     <GlobeWrap>
@@ -31,10 +57,7 @@ export const App = () => {
       <Wrapper>
         <h2>Contacts</h2>
         <Filter onChangeFilter={changeFilter} />
-        <ContactList
-          contacts={filteredContacts}
-          onDelete={deleteContact}
-        />
+        <ContactList contacts={getfilteredContacts} onDelete={deleteContact} />
       </Wrapper>
     </GlobeWrap>
   );
