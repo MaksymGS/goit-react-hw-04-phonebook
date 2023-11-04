@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
   gap: 24px;
   
 `;
-export const GlobeWrap = styled.div`
+export const Layout = styled.div`
   display: flex;
 justify-content: space-evenly;
   background-color: #f4f4fd;

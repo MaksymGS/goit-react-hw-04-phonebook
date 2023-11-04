@@ -3,7 +3,7 @@ import { ContactForm } from './ContactForm/ContactForm';
 import { nanoid } from 'nanoid';
 import { ContactList } from './ContactList/ContactList';
 import { Filter } from './Filter/Filter';
-import { GlobeWrap, Wrapper } from './App.styled';
+import { Layout, Wrapper } from './Layout';
 
 const getInitContacts = () => {
   const localStorageContacts = localStorage.getItem('storedContacts');
@@ -49,7 +49,7 @@ export const App = () => {
   };
 
   return (
-    <GlobeWrap>
+    <Layout>
       <Wrapper>
         <h1>Phonebook</h1>
         <ContactForm onAddContacts={addContacts} />
@@ -59,6 +59,6 @@ export const App = () => {
         <Filter onChangeFilter={changeFilter} />
         <ContactList contacts={getfilteredContacts} onDelete={deleteContact} />
       </Wrapper>
-    </GlobeWrap>
+    </Layout>
   );
 };
